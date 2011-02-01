@@ -123,6 +123,7 @@ class Seemes{
 		array('Ads', 				'Yahoo! Ads',				'/window\.yzq_d/i'),
 		array('Analytics',			'BTBuckets',				'/btbuckets\.com\/bt\.js/i'),	# btbuckets.com/bt.js
 		array('Analytics',			'chartbeat',				'/chartbeat\.com\/js\/chartbeat\.js/i'),
+		array('Analytics',			'ClickTale',				'/clicktale\.net\//i'),
 		array('Analytics',			'Clicky',					'/clicky/'),
 		array('Analytics',			'Gomez',					'/var\sgomez\s?\=/i'),
 		array('Analytics',			'Google Analytics',			'/google-analytics.com\/(ga|urchin).js/i'),
@@ -200,17 +201,19 @@ class Seemes{
 	);
 
 	var $fetch_accounts = array(
-		array('Ads',				'AdSense',					'/google\_ad\_client\s?\=\s?["\'](.*)["\']\;/i'),	#	google_ad_client = "pub-3632299827451484";
+		array('Ads',				'AdSense',					'/google\_ad\_client\s?\=\s?["\'](.+?)["\']\;/i'),	#	google_ad_client = "pub-3632299827451484";
+		array('Ads',				'AdSense',					'/GS\_googleAddAdSenseService\(["\'](.+?)["\']\)\;/i'),	#	GS_googleAddAdSenseService("ca-pub-3152670624293746");
+		array('Ads',				'AdSense',					'/GA\_googleAddSlot\(["\'](.+?)["\']\,/i'),	#	GA_googleAddSlot("ca-pub-3152670624293746", "MediumRectangle");
 		array('Ads',				'Chango',					'/__changoPartnerId\=["\'](.*)["\']\;/i'),	#	<script type="text/javascript">var __changoPartnerId='suite101';</script>
 		array('Ads',				'Google Conversion',		'/google\_conversion\_id\s?\=\s?["\']?(.*)["\']?\;/i'),	#	google_conversion_id = 1031212126;
 		array('Ads',				'VigLink',					'/vglnk\s?\=\s?\{\s\?key\:\s?["\'](.*)["\']\s?\}\;/i'),	#	var vglnk = { key: '909e2de4e3686ff0cbf92e12d6b99c58' };
 		array('Analytics',			'BTBuckets',				'/\$BTB\=\{s\:(.*)\}\;/i'),	# $BTB={s:10777};
-		array('Analytics',			'chartbeat',				'/async_config\=\{uid\:(.*)\,/i'),
+		array('Analytics',			'chartbeat',				'/async\_config\=\{uid\:\s?(.[0-9]{1,10})\,/i'),
 		array('Analytics',			'Clicky',					'/clicky\.init\((.*)\)\;/i'),	#	clicky.init(210465);
 		array('Analytics',			'Clicky',					'/getclicky\.com\/in\.php\?site\_id\=(.*)\&/i'),	#	http://in.getclicky.com/in.php?site_id=210465&
 		array('Analytics',			'Enquisite',				'/\.enquisite\.com\/log\.js\?id\=(.*)/i'),	#	http://log.enquisite.com/log.js?id=seomoz
 		array('Analytics',			'Google Analytics (Old)',	'/\_uacct \= ["\'](.*)["\']/i'),
-		array('Analytics',			'Google Analytics',			'/\_getTracker\(["\'](.*)["\']\);/i'),	#	_gat._getTracker("UA-705847-4");
+		array('Analytics',			'Google Analytics',			'/\_getTracker\(["\'](.+?)["\']\)\;/i'),	#	_gat._getTracker("UA-705847-4");
 		array('Analytics',			'Google Analytics',			'/\_setAccount["\']\, ["\'](.*)["\']\]\, \[["\']\_trackPageview["\']\]/i'),
 		array('Analytics',			'Google Analytics',			'/\_setAccount["\']\, ["\']([AUau\-0-9]*)["\']\]\)\;/i'),	#	_setAccount', 'UA-32013-6'], ['_trackPageview'] / _setAccount', 'UA-10841838-1']);
 		array('Analytics',			'NedStat',					'/\.nedstatbasic\.net\/cgi-bin\/viewstat\?name\=(.*)["\']/i'), # <a href="http://usa.nedstatbasic.net/cgi-bin/viewstat?name=nesdev">
@@ -219,7 +222,7 @@ class Seemes{
 		array('Analytics',			'Reinvigorate',				'/reinvigorate\.track\(["\'](.*)["\']\)/i'),	#	reinvigorate.track("54ja7-5p4r2a407o");
 		array('Analytics',			'Site Meter',				'/sitemeter\.com\/js\/counter\.js\?site\=(.*)["\']/i'),	#	# http://s15.sitemeter.com/js/counter.js?site=s15friedbeef
 		array('Analytics',			'SiteCensus',				'/\?ci\=(.*)&cg\=/i'),	#	"http://secure-us.imrworldwide.com/cgi-bin/m?ci=us-803450h&cg=0&cc=1&si="
-		array('Analytics',			'StatCounter',				'/sc\_project\=(.*);/i'), #	var sc_project=4240773;
+		array('Analytics',			'StatCounter',				'/sc\_project\=(.+?);/i'), #	var sc_project=4240773;
 		array('Analytics',			'TopList.cz',				'/src\=["\']http\:\/\/toplist\.cz\/dot\.asp\?id\=(.*)["\&]/i'),	# http://toplist.cz/dot.asp?id=472987
 		array('Analytics',			'Tyxo.bg Counter',			'/cnt\.tyxo\.bg\/(.*)\?rnd/i'),	# http://cnt.tyxo.bg/30428?rnd=
 		array('Analytics',			'Tyxo.bg Counter',			'/www\.tyxo\.bg\/\?(.*)["\']/i'),	# http://www.tyxo.bg/?30428
@@ -292,7 +295,8 @@ class Seemes{
 		$url = trim($url);
 		$data = null;
 		$name = $this->sanitize($url);
-		$file = getcwd() . '/' . $name . '.html';
+		$cache_folder = 'cache/';
+		$file = getcwd() . '/' . $cache_folder . $name . '.html';
 		if(file_exists($file)){
 			# Remove file if its older than a day
 			$data = file_get_contents($file);
@@ -317,6 +321,9 @@ class Seemes{
 			$data = curl_exec($ch);
 			curl_close($ch);
 			if($cache){
+				if(!is_dir($cache_folder)){
+					mkdir($cache_folder);
+				}
 				file_put_contents($file, $data);
 			}
 		}
