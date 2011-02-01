@@ -20,8 +20,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-Some parts of this script were refered from Chrome AppSniffer, by Bao Nguyen <contact@nqbao.com>
-http://www.nqbao.com/chrome-sniffer
+Some parts of this script were refered from Chrome AppSniffer, by Bao Nguyen <contact@nqbao.com>.
 */
 class Seemes{
 	var $url = '';
