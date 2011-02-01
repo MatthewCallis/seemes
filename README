@@ -1,0 +1,31 @@
+## Seemes ##
+
+Pronounced like CMS. This class will scan for known software running on a given website and report it back. Simple to expand, easily to implement. See the file for functions and usage until I can write a better version here.
+
+## Example Usage and Output ##
+
+    # Initialize.
+    $seemes = new Seemes();
+    # Fetch page and spoof as Chrome.
+    $page = $seemes->fetchUrl('http://superfamicom.org/', true);
+    # Set what we want to filter by, nothing for all.
+    $search_for = array();
+    # Begin the searching...
+    $results = $seemes->checkMetaTags(&$page, $results);
+    $results = $seemes->checkScriptTags(&$page, $results, &$search_for);
+    $results = $seemes->checkPageText(&$page, $results, &$search_for);
+    print_r($results);
+    $analytics = $seemes->getAccounts(&$page);
+    print_r($analytics);
+
+    Array
+    (
+        [0] => Reinvigorate
+        [1] => Google Analytics
+    )
+
+    Array
+    (
+        [0] => Google Analytics: UA-315321-4
+        [1] => Reinvigorate: n5e27-9j4m6p6586
+    )
