@@ -29,3 +29,18 @@ Pronounced like CMS. This class will scan for known software running on a given 
         [0] => Google Analytics: UA-315321-4
         [1] => Reinvigorate: n5e27-9j4m6p6586
     )
+
+## Command Line Example ##
+
+This will run through a CSV of domains output by Open Site Explorer and append the CMS and any Analytics accounts it finds. Read through the comments in the files to learn more about what's going on.
+
+    ./command_line_example.php domains-domain-www.distilled.co.uk.csv 7
+
+    Reading: domains-domain-www.distilled.co.uk.csv
+    
+    Checking http://adobe.com/... done!
+    Checking http://google.com/... done!
+    Checking http://vimeo.com/... done!
+    Checking http://reddit.com/... done!
+    Checking http://twitter.com/... done!
+    Checking http://linkedin.com/... done!
