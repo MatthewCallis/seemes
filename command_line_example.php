@@ -53,6 +53,8 @@ if(!empty($argc) && strstr($argv[0], basename(__FILE__))){
 					$cms = implode(', ', $results);
 					$analytics = $seemes->getAccounts(&$page);
 					$analytics = implode(', ', $analytics);
+					if($cms[0] == ',') $cms = substr($cms, 2);
+					if($analytics[0] == ',') $analytics = substr($analytics, 2);
 				}
 				# Add our found values back to our array so we can convert them to CSV later.
 				# Each value in the array is another column, so here we are adding 2 columns, then updating our original container array.

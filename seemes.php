@@ -25,7 +25,7 @@ Some parts of this script were refered from Chrome AppSniffer, by Bao Nguyen <co
 class Seemes{
 	var $url = '';
 	var $connected;
-	var $valid_filters = array('Ads', 'Analytics', 'CMS', 'Customer Service', 'Framework', 'Social API', 'Utility');
+	var $valid_filters = array('Ads', 'Analytics', 'CMS', 'Customer Service', 'ESP', 'Framework', 'Language', 'Social API', 'Utility', '*Error*');
 
 	# Some basic user agents for testing sites.
 	var $user_agents = array(
@@ -67,6 +67,7 @@ class Seemes{
 		array('Analytics',			'Trovus',					'/statistics\.trovus\.co\.uk\//i'),	# http://statistics.trovus.co.uk/splats/111.js
 		array('Analytics',			'WordPress Stats',			'/stats\.wordpress\.com\//i'),	# http://stats.wordpress.com/e-201105.js
 		array('CMS',				'Big Cartel',				'/\.bigcartel\.com\//i'),
+		array('CMS',				'Drupal',					'/(\/sites\/all\/modules\//i'),
 		array('CMS',				'Gallery2',					'/main\.php\?.*g2_.*/i'),
 		array('CMS',				'Joomla',					'/\/components\/com_/i'),
 		array('CMS',				'MODx',						'/\/min\/b=.*f=.*/i'),
@@ -96,15 +97,17 @@ class Seemes{
 		array('Social API',			'AddThis',					'/addthis\.com\/js\//i'),	# http://s7.addthis.com/js/addthis_widget.php?v=12
 		array('Social API',			'bandcamp',					'/bandcamp\.com\/tmpdata\//i'),
 		array('Social API',			'Facebook',					'/connect\.facebook\.net\/.*\/all\.js/i'),
+		array('Social API',			'Flickr',					'/flickr\.com\/badge\_code\.gne\?/i'),	# http://www.flickr.com/badge_code.gne?nsid=41519657%40N00&count=6&display=latest&name=0&size=square&raw=1
 		array('Social API',			'MyBlogLog',				'/mybloglog\.com\//i'),	# http://track.mybloglog.com/js/jsserv.php?mblID=2008072316273799
 		array('Social API',			'Sphinn',					'/sphinn\.com\//i'),	# http://sphinn.com/evb/button.php
 		array('Social API',			'Tumblr',					'/\.tumblr\.com\//i'),
-		array('Social API',			'Twitter',					'/\/platform\.twitter\.com\//i'),
+		array('Social API',			'Twitter',					'/(\/platform\.)?twitter\.com\/(javascripts)?/i'),	# http://twitter.com/javascripts/blogger.js
 		array('Utility',			'Brightcove',				'/brightcove\.com\//i'),	# http://admin.brightcove.com/js/BrightcoveExperiences_all.js
 		array('Utility',			'Cufon',					'/cufon\-yui\./i'),
 		array('Utility',			'Disqus',					'/disqus.com\/forums/i'),
 		array('Utility',			'E-junkie',					'/\.e\-junkie\.com\//i'),	# http://www.e-junkie.com/ecom/boxec28_enc.js
 		array('Utility',			'Mollom',					'/mollom\/mollom\.js/i'),
+		array('Utility',			'Questionmarket',			'/\.dl\-rms\.com\//i'),
 		array('Utility',			'reCaptcha',				'/(\/wp\-recaptcha\/|api\.recaptcha\.net\/)/i'),
 		array('Utility',			'Tyny',						'/tynt\.com\/javascripts\//i'),	# http://tcr.tynt.com/javascripts/Tracer.js?user=dUaMNy73Or3QRoadbiUzgI&amp;s=101
 		array('Utility',			'Visual Website Optimizer',	'/visualwebsiteoptimizer\.com\//i'),	# http://dev.visualwebsiteoptimizer.com/deploy/js_visitor_settings.php?a=566&amp;random=0.36674677208065987
@@ -172,7 +175,7 @@ class Seemes{
 		array('CMS',				'Joomla',					'generator',			'/joomla/i'),
 		array('CMS',				'Koobi',					'generator',			'/koobi/i'),
 		array('CMS',				'MediaWiki',				'generator',			'/MediaWiki/i'),
-		array('CMS',				'Movable Type',				'generator',			'/Movable Type/i'),
+		array('CMS',				'Movable Type',				'generator',			'/Movable[\s]?Type/i'),
 		array('CMS',				'OpenACS',					'generator',			'/OpenACS/i'),
 		array('CMS',				'PHP-Nuke',					'generator',			'/PHP-Nuke/i'),
 		array('CMS',				'PivotX',					'generator',			'/PivotX/i'),
@@ -209,6 +212,7 @@ class Seemes{
 		array('Ads',				'VigLink',					'/vglnk\s?\=\s?\{\s\?key\:\s?["\'](.*)["\']\s?\}\;/i'),	#	var vglnk = { key: '909e2de4e3686ff0cbf92e12d6b99c58' };
 		array('Analytics',			'BTBuckets',				'/\$BTB\=\{s\:(.*)\}\;/i'),	# $BTB={s:10777};
 		array('Analytics',			'chartbeat',				'/async\_config\=\{uid\:\s?(.[0-9]{1,10})\,/i'),
+		array('Analytics',			'ClickTale',				'/ClickTale\((.*)\,[\s]?[0-9]\,[\s]?["\'].+?["\']\)\;/i'),	# ClickTale(40377,1,"www");
 		array('Analytics',			'Clicky',					'/clicky\.init\((.*)\)\;/i'),	#	clicky.init(210465);
 		array('Analytics',			'Clicky',					'/getclicky\.com\/in\.php\?site\_id\=(.*)\&/i'),	#	http://in.getclicky.com/in.php?site_id=210465&
 		array('Analytics',			'Enquisite',				'/\.enquisite\.com\/log\.js\?id\=(.*)/i'),	#	http://log.enquisite.com/log.js?id=seomoz
@@ -228,13 +232,17 @@ class Seemes{
 		array('Analytics',			'Tyxo.bg Counter',			'/www\.tyxo\.bg\/\?(.*)["\']/i'),	# http://www.tyxo.bg/?30428
 		array('Social API',			'Blogglisten',				'/blogglisten\.no\/count\?id\=(.*)["\']\)/i'),	# myBloggListenAsynch.src = ('http://www.blogglisten.no/count?id=1962');
 		array('Social API',			'Facebook AppID',			'/appId\:\s?["\']([0-9])["\']\,/'),
+		array('Social API',			'Flickr',					'/flickr\.com\/badge\_code\.gne\?nsid\=(.+?)\&/i'),	# http://www.flickr.com/badge_code.gne?nsid=41519657%40N00&count=6&display=latest&name=0&size=square&raw=1
 		array('Social API',			'MyBlogLog',				'/mybloglog\.com\/js\/jsserv\.php\?mblID\=(.*)["\']/i'),	# http://track.mybloglog.com/js/jsserv.php?mblID=2008072316273799
+		array('Social API',			'Shelfari',					'/FlashVars\=["\']UserName\=(.+?)&.*?["\']/i'),
+		array('Social API',			'Twitter',					'/twitter\.com\/statuses\/user\_timeline\/(.+?)\.json\?/i'),
 	);
 
 	var $test_text = array(
 		array('Ads',				'BannerConnect',			'/src=["\']http:\/\/ad\.bannerconnect\.net/i'),
 		array('Ads',				'OpenX',					'/(href|src)=["\'].*delivery\/(afr|ajs|avw|ck)\.php[^"\']*/'),
 		array('Ads',				'ReTargeter',				'/\/ad\.retargeter\.com\/seg/i'),
+		array('Ads',				'Fetchback',				'/pixel\.fetchback\.com\/serve/i'),	# http://pixel.fetchback.com/serve/fb/pdc?cat=&name=landing&sid=580
 		array('Analytics',			'NedStat',					'/\.nedstatbasic\.net\/cgi-bin\/viewstat\?name\=/i'),
 		array('Analytics',			'PercentMobile',			'/tracking\.percentmobile\.com\/pixel\//i'),	# http://tracking.percentmobile.com/pixel/ce645c30-75bd-11de-899d-12313900c5b8
 		array('Analytics',			'SiteCatalyst',				'/End SiteCatalyst code/i'),
@@ -243,8 +251,11 @@ class Seemes{
 		array('CMS',				'Bitrix',					'/<link[^>]*\/bitrix\/.*?>/i'),
 		array('CMS',				'Burning Board Lite',		'/Powered by <b><a[^>]+>Burning Board Lite/i'),
 		array('CMS',				'Contao',					'/powered by (TYPOlight|Contao)/is'),
+		array('CMS',				'Drupal',					'/(\/sites\/all\/(modules|themes)\/|\/modules\/system\/)/i'),
+		array('CMS',				'EventWax',					'/\.eventwax\.com\/(.*)\/register/i'),	# https://github.eventwax.com/codeconf-2011/register	
 		array('CMS',				'Fatwire',					'/\/Satellite\?|\/ContentServer\?/s'),
 		array('CMS',				'Liferay',					'/<script[^>]*>.*LifeRay\.currentURL/is'),
+		array('CMS',				'Movable Type',				'/Powered by\<br[\s]?[\/]?\>\<a[^>]+>Movable[\s]?Type/i'),	# Powered by<br /><a href="http://www.movabletype.org" rel="nofollow">Movable Type 3.17</a>
 		array('CMS',				'Magento',					'/var BLANK_URL = \'[^>]+js\/blank\.html\'/i'),
 		array('CMS',				'miniBB',					'/<a href=["\'][^>]+minibb.+\s*<!--End of copyright link/is'),
 		array('CMS',				'MODx',						'/<a[^>]+>Powered by MODx<\/a>/i'),
@@ -253,18 +264,27 @@ class Seemes{
 		array('CMS',				'osCommerce',				'/Powered by <a[^>]+>osCommerce<\/a>/i'),
 		array('CMS',				'PHP-Fusion',				'/(href|src)=["\']?infusions\//i'),
 		array('CMS',				'phpBB',					'/Powered by <a[^>]+>phpBB<\/a>/i'),
+		array('CMS',				'phpBB',					'/["\']templates\/subSilver\/subSilver\.css["\']/i'),
 		array('CMS',				'SMF',						'/<script .+\s+var smf_/i'),
+		array('CMS',				'SuperSite',				'/(Template root\.html starts here ###|ui\/supersite\/)/i'),	# http://40083.myorderbox.com/kb/servlet/KBServlet/faq1103.html
 		array('CMS',				'vBulletin',				'/vbmenu_control/i'),
 		array('CMS',				'WordPress',				'/<link rel=["\']stylesheet["\'] [^>]+wp-content/i'),
+		array('CMS',				'WordPress',				'/\/wp\-login\.php["\']/i'),
+		array('CMS',				'WordPress',				'/Performance optimized by W3 Total Cache/i'),
 		array('CMS',				'XOOPS',					'/xoops(_login|_redirect|poll)/i'),
 		array('Customer Service',	'GetSatisfaction',			'/asset_host\s*\+\s*"javascripts\/feedback.*\.js/im'),
+		array('ESP',				'Constant Contact',			'/constantcontact\.com\/safesubscribe\.jsp/i'),
+		array('ESP',				'CreateSend',				'/action\=["\']http\:\/\/.*?\.createsend\.com\/.*?["\'].*?\>/i'),	# <form action="http://existem.createsend.com/t/y/s/ykmhl/" method="post" id="subForm">
 		array('Framework',			'Google Font API',			'/ref=["\']?http:\/\/fonts.googleapis.com\//i'),
 		array('Framework',			'YUI',						'/(yui-overlay|yui-panel-container|_yuiResizeMonitor)/'),
+		array('Language',			'ASP.NET',					'/(\_\_EVENT(TARGET|ARGUMENT)|\_\_VIEWSTATE)/'),
+		array('Social API',			'Shelfari',					'/shelfari\.com\/ws\//i'),	# http://www.shelfari.com/ws/shelfH.swf
 		array('Social API',			'Tumblr',					'/<iframe src=["\']http:\/\/www\.tumblr\.com/i'),
 		array('Social API',			'Twitter',					'/\.twitter\.com\/flash\/widgets\//i'),
 		array('Utility',			'Closure',					'/<script[^>]*>.*goog\.require/is'),
 		array('Utility',			'Gravatar',					'/\/secure\.gravatar\.com\/avatar\//i'),
-		array('*Error*',			'PHP Error',				'/\<b\>Warning\<\/b\>\:/')
+		array('*Error*',			'PHP Error',				'/\<b\>Warning\<\/b\>\:/'),
+		array('*Error*',			'Apache Error',				'/Internal Server Error\<\/title\>/i'),
 	);
 
 	# Constructor
