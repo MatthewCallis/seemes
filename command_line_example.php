@@ -38,6 +38,7 @@ if(!empty($argc) && strstr($argv[0], basename(__FILE__))){
 				$results = array();
 				$seemes = new Seemes($domain_name);
 				$page = $seemes->fetchUrl($domain_name, true);
+				$header = $seemes->fetchHeaders($domain_name, true);
 				$cms = '';
 				# Check to see if we are online or offline and cached and report appropriately
 				if($page == 'offline'){
@@ -50,8 +51,9 @@ if(!empty($argc) && strstr($argv[0], basename(__FILE__))){
 					$results = $seemes->checkMetaTags(&$page, $results);
 					$results = $seemes->checkScriptTags(&$page, $results, &$search_for);
 					$results = $seemes->checkPageText(&$page, $results, &$search_for);
+					$results = $seemes->checkPageHeaders(&$header, $results, &$search_for);
 					$cms = implode(', ', $results);
-					$analytics = $seemes->getAccounts(&$page);
+					$analytics = $seemes->getAccounts(&$page, array(), array());
 					$analytics = implode(', ', $analytics);
 					if($cms[0] == ',') $cms = substr($cms, 2);
 					if($analytics[0] == ',') $analytics = substr($analytics, 2);

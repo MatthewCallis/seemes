@@ -25,7 +25,7 @@ Some parts of this script were refered from Chrome AppSniffer, by Bao Nguyen <co
 class Seemes{
 	var $url = '';
 	var $connected;
-	var $valid_filters = array('Ads', 'Analytics', 'CMS', 'Customer Service', 'ESP', 'Framework', 'Language', 'Social API', 'Utility', '*Error*');
+	var $valid_filters = array('Ads', 'Analytics', 'CMS', 'Customer Service', 'ESP', 'Framework', 'Language', 'Server', 'Social API', 'Utility', '*Error*');
 
 	# Some basic user agents for testing sites.
 	var $user_agents = array(
@@ -35,6 +35,7 @@ class Seemes{
 
 	var $test_script_src = array(
 		array('Ads',				'adingo',					'/adingo\.jp\/\?/i'),	# http://sh.adingo.jp/?G=1000000002&guid=ON
+		array('Ads',				'AdInsight',				'/call\-tracking\.co\.uk\//i'),	# https://services.call-tracking.co.uk/WebServices/
 		array('Ads',				'AdSense', 					'/pagead\/show\_ads\.js/i'),
 		array('Ads',				'AdSide', 					'/\.doclix\.com\//i'),	# http://ads.doclix.com/adserver/serve/js/doclix_synd_overlay.js
 		array('Ads',				'adzerk',					'/adzerk\.(net|com)/i'),
@@ -64,6 +65,7 @@ class Seemes{
 		array('Analytics',			'ScorecardResearch',		'/\.scorecardresearch\.com\/beacon\.js/i'),	# http://b.scorecardresearch.com/beacon.js
 		array('Analytics',			'Site Meter',				'/\.sitemeter\.com\/js\//i'),	# http://s15.sitemeter.com/js/counter.js?site=s15friedbeef
 		array('Analytics',			'StatCounter',				'/statcounter\.com\//i'),	# http://www.statcounter.com/counter/counter_xhtml.js
+		array('Analytics',			'Trackalyzer',				'/trackalyzer\.com\//i'),	# http://t1.trackalyzer.com/trackalyze.js
 		array('Analytics',			'Trovus',					'/statistics\.trovus\.co\.uk\//i'),	# http://statistics.trovus.co.uk/splats/111.js
 		array('Analytics',			'WordPress Stats',			'/stats\.wordpress\.com\//i'),	# http://stats.wordpress.com/e-201105.js
 		array('CMS',				'Big Cartel',				'/\.bigcartel\.com\//i'),
@@ -96,16 +98,21 @@ class Seemes{
 		array('Framework',			'YUI',						'/(yahoo-dom-event|connection-min)\.js/i'),
 		array('Social API',			'AddThis',					'/addthis\.com\/js\//i'),	# http://s7.addthis.com/js/addthis_widget.php?v=12
 		array('Social API',			'bandcamp',					'/bandcamp\.com\/tmpdata\//i'),
+		array('Social API',			'Digg',						'/widgets\.digg\.com/i'),	# http://widgets.digg.com/buttons.js
 		array('Social API',			'Facebook',					'/connect\.facebook\.net\/.*\/all\.js/i'),
 		array('Social API',			'Flickr',					'/flickr\.com\/badge\_code\.gne\?/i'),	# http://www.flickr.com/badge_code.gne?nsid=41519657%40N00&count=6&display=latest&name=0&size=square&raw=1
+		array('Social API',			'Google Buzz',				'/google\.com\/buzz\/api\//i'),	# http://www.google.com/buzz/api/button.js
+		array('Social API',			'LinkedIn',					'/platform\.linkedin\.com/i'),	# http://platform.linkedin.com/in.js
 		array('Social API',			'MyBlogLog',				'/mybloglog\.com\//i'),	# http://track.mybloglog.com/js/jsserv.php?mblID=2008072316273799
 		array('Social API',			'Sphinn',					'/sphinn\.com\//i'),	# http://sphinn.com/evb/button.php
 		array('Social API',			'Tumblr',					'/\.tumblr\.com\//i'),
 		array('Social API',			'Twitter',					'/(\/platform\.)?twitter\.com\/(javascripts)?/i'),	# http://twitter.com/javascripts/blogger.js
 		array('Utility',			'Brightcove',				'/brightcove\.com\//i'),	# http://admin.brightcove.com/js/BrightcoveExperiences_all.js
+		array('Utility',			'Conduit',					'/conduit\-banners\.com\//i'),	# http://apps.conduit-banners.com/
 		array('Utility',			'Cufon',					'/cufon\-yui\./i'),
 		array('Utility',			'Disqus',					'/disqus.com\/forums/i'),
 		array('Utility',			'E-junkie',					'/\.e\-junkie\.com\//i'),	# http://www.e-junkie.com/ecom/boxec28_enc.js
+		array('Utility',			'Google Custom Search',		'/google\.com\/cse\//i'),	# http://www.google.com/cse/
 		array('Utility',			'Mollom',					'/mollom\/mollom\.js/i'),
 		array('Utility',			'Questionmarket',			'/\.dl\-rms\.com\//i'),
 		array('Utility',			'reCaptcha',				'/(\/wp\-recaptcha\/|api\.recaptcha\.net\/)/i'),
@@ -116,6 +123,7 @@ class Seemes{
 
 	var $test_script_content = array(
 		array('Ads',				'AdFox',					'/ads\.adfox\.ru\//i'),	# http://ads.adfox.ru/3732/getCode?p1=cjst
+		array('Ads',				'ADTECH',					'/adtechus\.com\//i'),	# http://adserver.adtechus.com/addyn|3.0|5322...
 		array('Ads',				'BuySellAds.com',			'/\.buysellads\.com\//i'),
 		array('Ads', 				'doubleclick',				'/doubleclick\.net/i'),
 		array('Ads', 				'Evidon',					'/(info\.betteradvertising\.com|betrad\.com)/i'),
@@ -130,11 +138,15 @@ class Seemes{
 		array('Analytics',			'Clicky',					'/clicky/'),
 		array('Analytics',			'Gomez',					'/var\sgomez\s?\=/i'),
 		array('Analytics',			'Google Analytics',			'/google-analytics.com\/(ga|urchin).js/i'),
+		array('Analytics',			'IQNOMY Liquid Internet',	'/liquidplatform\.iqnomy\.com/i'),
+		array('Analytics',			'iWebTrack',				'/iwebtrack\.com/i'),	# var iwt_statsserver = "http://stats.iwebtrack.com";
 		array('Analytics',			'KISSmetrics',				'/(i\.kissmetrics\.com\/|\_kmq \= \_kmq|\_kiq \= \_kiq)/i'),
+		array('Analytics',			'Mixpanel',					'/mixpanel\.com\/site\_media/i'),	# 'https:' ? 'https:' : 'http:') + "//api.mixpanel.com/site_media/js/api/mixpanel.js";
 		array('Analytics',			'ScorecardResearch',		'/\.scorecardresearch\.com\/beacon\.js/i'),
 		array('Analytics',			'Tyxo.bg Counter',			'/(www|cnt)\.tyxo\.bg\//i'),
 		array('Analytics',			'SiteCensus',				'/\.imrworldwide\.com\//i'),
-		array('Analytics',			'Woopra',					'/woopraTracker/'),
+		array('Analytics',			'StormIQ',					'/\.stormiq\.com\//i'),	# t1.stormiq.com/dcv4/jslib/
+		array('Analytics',			'Woopra',					'/(woopraTracker|static\.woopra\.com)/'),
 		array('CMS',				'Drupal',					'/Drupal/'),
 		array('CMS',				'ErainCart',				'/fn_register_hooks/'),
 		array('CMS',				'IPB',						'/IPBoard/'),
@@ -153,6 +165,7 @@ class Seemes{
 		array('Social API',			'Facebook',					'/FB\.(Facebook|api|init)/'),
 		array('Social API',			'Flattr',					'/api\.flattr\.com\//i'),	# http://api.flattr.com/js/0.6/load.js?mode=auto
 		array('Utility',			'Cufon',					'/Cufon/'),
+		array('Utility',			'FusionMaps',				'/new FusionMaps\(/i'),	# var map = new FusionMaps("/p/FCMap_USA.swf", "Map1Id", "390", "240", "0", "0");
 		array('Utility',			'Modernizr',				'/Modernizr/'),
 		array('Utility',			'Raphael',					'/Raphael/'),
 		array('Utility',			'sIFR',						'/sIFR/'),
@@ -200,7 +213,7 @@ class Seemes{
 		array('Analytics',			'Bing Webmaster Tools',		'msvalidate.01',		'/.+/i'),	# <meta name="msvalidate.01" content="FA310D24EFEA12737520F4C8C36F67A5" />
 		array('Analytics',			'Google Webmaster Tools',	'google-site-verification', '/.+/i'),	# <meta name="google-site-verification" content="jkqweQY8S-UZGcifNuxgeQ493pfF_wo3HBTeH2TVbSw" />
 		array('Analytics',			'Google Webmaster Tools',	'verify-v1',			'/.+/i'),	# <meta name="verify-v1" content="5VGqvoC0PBAbwbfT/XlznseDBSLXNw/+SA/B1KJuqXA=" />
-		array('Analytics',			'Yahoo! Webmaster Tools',	'y_key',				'/.+/i')	# <META name="y_key" content="1658eb44756e03a0">
+		array('Analytics',			'Yahoo! Webmaster Tools',	'y_key',				'/.+/i'),	# <META name="y_key" content="1658eb44756e03a0">
 	);
 
 	var $fetch_accounts = array(
@@ -220,6 +233,8 @@ class Seemes{
 		array('Analytics',			'Google Analytics',			'/\_getTracker\(["\'](.+?)["\']\)\;/i'),	#	_gat._getTracker("UA-705847-4");
 		array('Analytics',			'Google Analytics',			'/\_setAccount["\']\, ["\'](.*)["\']\]\, \[["\']\_trackPageview["\']\]/i'),
 		array('Analytics',			'Google Analytics',			'/\_setAccount["\']\, ["\']([AUau\-0-9]*)["\']\]\)\;/i'),	#	_setAccount', 'UA-32013-6'], ['_trackPageview'] / _setAccount', 'UA-10841838-1']);
+		array('Analytics',			'iWebTrack',				'/\/nTrack\.asp\?id\=(.+?)\&/i'),	# /nTrack.asp?id=28223&
+		array('Analytics',			'Mixpanel',					'/mpq\.push\(\[["\']init["\'],\s?["\'](.+?)["\']]\)\;/i'),	# mpq.push(["init", "65fde2abd433eae3b32b38b7ebd2f37e"]);
 		array('Analytics',			'NedStat',					'/\.nedstatbasic\.net\/cgi-bin\/viewstat\?name\=(.*)["\']/i'), # <a href="http://usa.nedstatbasic.net/cgi-bin/viewstat?name=nesdev">
 		array('Analytics',			'Quantcast',				'/\qacct\=["\'](.*)["\'];/i'),	#	_qacct="p-d4P3FpSypJrlA";
 		array('Analytics',			'Quantcast',				'/\_qoptions \= \{ qacct\: ["\'](.*)["\']/i'),	#	_qoptions = { qacct: "p-45WWkjSYwI3II" };
@@ -232,10 +247,18 @@ class Seemes{
 		array('Analytics',			'Tyxo.bg Counter',			'/www\.tyxo\.bg\/\?(.*)["\']/i'),	# http://www.tyxo.bg/?30428
 		array('Social API',			'Blogglisten',				'/blogglisten\.no\/count\?id\=(.*)["\']\)/i'),	# myBloggListenAsynch.src = ('http://www.blogglisten.no/count?id=1962');
 		array('Social API',			'Facebook AppID',			'/appId\:\s?["\']([0-9])["\']\,/'),
+		array('Social API',			'Facebook',					'/facebook\.com\/home\.php\?#\/(.+?)[\?"\']/i'),	# http://www.facebook.com/home.php?#/jan.riley?ref=profile
 		array('Social API',			'Flickr',					'/flickr\.com\/badge\_code\.gne\?nsid\=(.+?)\&/i'),	# http://www.flickr.com/badge_code.gne?nsid=41519657%40N00&count=6&display=latest&name=0&size=square&raw=1
+		array('Social API',			'Flickr',					'/flickr\.com\/people\/(.+?)["\']/i'),	# http://www.flickr.com/people/34166943@N05
+		array('Social API',			'LinkedIn',					'/linkedin\.com\/[-a-zA-Z0-9]{1,20}\/(.+?)["\']/i'),
 		array('Social API',			'MyBlogLog',				'/mybloglog\.com\/js\/jsserv\.php\?mblID\=(.*)["\']/i'),	# http://track.mybloglog.com/js/jsserv.php?mblID=2008072316273799
+		array('Social API',			'Reddit',					'/reddit\.com\/user\/(.+?)["\']/i'),	# http://www.reddit.com/user/ArtCantHurtU/
 		array('Social API',			'Shelfari',					'/FlashVars\=["\']UserName\=(.+?)&.*?["\']/i'),
+		array('Social API',			'StumbleUpon',				'/https?\:\/\/(.+?)\.stumbleupon.com\/["\']/i'),	# http://artcanthurtu2.stumbleupon.com/
 		array('Social API',			'Twitter',					'/twitter\.com\/statuses\/user\_timeline\/(.+?)\.json\?/i'),
+		array('Social API',			'Twitter',					'/twittercounter\.com\/remote\/\?v\=.+?\&username\_owner\=(.+?)\&users\_id/i'),
+		array('Social API',			'Twitter',					'/tfb\.account[\s]\=[\s]["\'](.+?)["\']\;/i'),
+		array('Social API',			'Twitter',					'/value\=["\']userID\=(.+?)\&styleURL\=http\:\/\/static\.twitter\.com/i'),
 	);
 
 	var $test_text = array(
@@ -252,6 +275,7 @@ class Seemes{
 		array('CMS',				'Burning Board Lite',		'/Powered by <b><a[^>]+>Burning Board Lite/i'),
 		array('CMS',				'Contao',					'/powered by (TYPOlight|Contao)/is'),
 		array('CMS',				'Drupal',					'/(\/sites\/all\/(modules|themes)\/|\/modules\/system\/)/i'),
+		array('CMS',				'ExpressionEngine',			'/\<input[\s].+?[\s]name\=["\'](ACT|XID|RET)["\'].+?\/?\>/i'),	# <input type="hidden" name="XID" value="d04f5fe1238da64b0764f69777032a35fe141ce0" />
 		array('CMS',				'EventWax',					'/\.eventwax\.com\/(.*)\/register/i'),	# https://github.eventwax.com/codeconf-2011/register	
 		array('CMS',				'Fatwire',					'/\/Satellite\?|\/ContentServer\?/s'),
 		array('CMS',				'Liferay',					'/<script[^>]*>.*LifeRay\.currentURL/is'),
@@ -273,6 +297,7 @@ class Seemes{
 		array('CMS',				'WordPress',				'/Performance optimized by W3 Total Cache/i'),
 		array('CMS',				'XOOPS',					'/xoops(_login|_redirect|poll)/i'),
 		array('Customer Service',	'GetSatisfaction',			'/asset_host\s*\+\s*"javascripts\/feedback.*\.js/im'),
+		array('Customer Service',	'LivePerson',				'/\.liveperson\.net\//i'),	# http://server.iad.liveperson.net/hc/44533531/?cmd=file&amp;file=visitorWantsToChat&amp;site=44533531&amp;byhref=1&amp;imageUrl=
 		array('ESP',				'Constant Contact',			'/constantcontact\.com\/safesubscribe\.jsp/i'),
 		array('ESP',				'CreateSend',				'/action\=["\']http\:\/\/.*?\.createsend\.com\/.*?["\'].*?\>/i'),	# <form action="http://existem.createsend.com/t/y/s/ykmhl/" method="post" id="subForm">
 		array('Framework',			'Google Font API',			'/ref=["\']?http:\/\/fonts.googleapis.com\//i'),
@@ -283,8 +308,26 @@ class Seemes{
 		array('Social API',			'Twitter',					'/\.twitter\.com\/flash\/widgets\//i'),
 		array('Utility',			'Closure',					'/<script[^>]*>.*goog\.require/is'),
 		array('Utility',			'Gravatar',					'/\/secure\.gravatar\.com\/avatar\//i'),
+		array('Utility',			'SpeakerText',				'/jb\.speakertext\.com\/player\//i'),	# <link ... http://jb.speakertext.com/player/speakertext.css?ver=MU
 		array('*Error*',			'PHP Error',				'/\<b\>Warning\<\/b\>\:/'),
 		array('*Error*',			'Apache Error',				'/Internal Server Error\<\/title\>/i'),
+	);
+
+	var $test_header = array(
+		array('CMS',				'ExpressionEngine',			'/Set\-Cookie\: exp\_(last\_visit|last\_activity|tracker)/i'),	# Set-Cookie: exp_last_visit=981317295; / Set-Cookie: exp_last_activity=1296677295; / Set-Cookie: exp_tracker=a%3A1%3A%7Bi
+		array('CMS',				'Instiki',					'/Set\-Cookie\: instiki\_/i'),	# Set-Cookie: instiki_session=BAh7BjoPc...; path=/; HttpOnly
+		array('Language',			'ASP.NET',					'/Set\-Cookie\: ASPSESSION/i'),	# Set-Cookie: ASPSESSIONIDSCQSTBBT=CBNBDOEAKCFCGIOFPEHADLMC; path=/
+		array('Language',			'ASP.NET',					'/X\-AspNet\-Version\:/i'),	# X-AspNet-Version: 2.0.50727
+		array('Language',			'ASP.NET',					'/X\-Powered\-By\: ASP\.NET/i'),	# X-Powered-By: ASP.NET
+		array('Language',			'PHP',						'/Set\-Cookie\: PHPSESSID\=/i'),	# Set-Cookie: PHPSESSID=3ut6ngtftq81eud28sjeoldhd7; path=/
+		array('Language',			'PHP',						'/X\-Powered\-By\: PHP/i'),	# X-Powered-By: PHP/5.3.0
+		array('Language',			'Ruby',						'/X\-Powered\-By\: Phusion/i'),	# X-Powered-By: Phusion Passenger (mod_rails/mod_rack) 2.2.9
+		array('Language',			'Ruby',						'/X\-Rack\-Cache\:/i'),	# X-Rack-Cache: fresh
+		array('Server',				'Apache',					'/Server\: Apache/i'),	# Server: Apache/2.2.8 (CentOS)
+		array('Server',				'ArtBlast',					'/Server\: ArtBlast/i'),	# Server: ArtBlast/3.5.5
+		array('Server',				'Google Web Server',		'/Server\: gws/i'),	# Server: gws
+		array('Server',				'IIS',						'/Server\: Microsoft\-IIS/i'),	# Server: Microsoft-IIS/7.0 / Server: Microsoft-IIS/6.0
+		array('Server',				'nginx',					'/Server\: nginx/i'),	# Server: nginx/0.7.63
 	);
 
 	# Constructor
@@ -308,49 +351,6 @@ class Seemes{
 		$clean = trim(str_replace($strip, "", strip_tags($string)));
 		$clean = preg_replace("/[^a-zA-Z0-9]/", "", $clean);
 		return (function_exists('mb_strtolower')) ? mb_strtolower($clean, 'UTF-8') : strtolower($clean);
-	}
-
-	# Return the contents of a page as a string, either by spoofing or not.
-	function fetchUrl($url, $spoof = false, $user_agent = '', $cache = true){
-		$url = trim($url);
-		$data = null;
-		$name = $this->sanitize($url);
-		$cache_folder = 'cache/';
-		$file = getcwd() . '/' . $cache_folder . $name . '.html';
-		if(file_exists($file)){
-			# Remove file if its older than a day
-			$data = file_get_contents($file);
-			$file_last_modified = filemtime($file);
-			if(($file_last_modified - time()) > 24 * 3600){
-				unlink($file);
-			}
-		}
-		else if($this->connected){
-			$ch = curl_init();
-			if($spoof){
-				if($user_agent == ''){
-					$user_agent = $this->user_agents['Chrome'];
-				}
-				curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
-			}
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2);
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-			curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
-			$data = curl_exec($ch);
-			curl_close($ch);
-			if($cache){
-				if(!is_dir($cache_folder)){
-					mkdir($cache_folder);
-				}
-				file_put_contents($file, $data);
-			}
-		}
-		else{
-			$data = 'offline';
-		}
-		return $data;
 	}
 
 	# Check meta-tags for known values.
@@ -418,20 +418,116 @@ class Seemes{
 		return $found;
 	}
 
-	# Read the Analytic IDs used on the page.
-	function getAccounts($page, $found = array()){
+	# Check page headers.
+	function checkPageHeaders($header, $found = array(), $filter = array()){
+		$filter = ((!empty($filter) && is_array($filter)) ? $filter : $this->valid_filters);
 		$found = is_array($found) ? $found : array();
-		preg_match_all('/((<[\s\/]*script\b[^>]*>)([^>]*)(<\/script>))/i', $page, $script_tags);
-		$script_contents = $script_tags[3];
-		foreach($script_contents as $script){
-			foreach($this->fetch_accounts as $test){
-				if(preg_match($test[2], $script, $matches)){
-					$result = $test[1].': '.$matches[1];
-					if(in_array($result, $found)) continue;
-					array_push($found, $result);
-				}
+		foreach($this->test_header as $test){
+			if(in_array($test[1], $found)) continue;
+			if(!in_array($test[0], $filter)) continue;
+			if(preg_match($test[2], $header)){
+				array_push($found, $test[1]);
 			}
 		}
 		return $found;
+	}
+
+	# Check for and return various accounts and IDs used on the page.
+	function getAccounts($page, $found = array(), $filter = array()){
+		$found = is_array($found) ? $found : array();
+		$filter = ((!empty($filter) && is_array($filter)) ? $filter : $this->valid_filters);
+		foreach($this->fetch_accounts as $test){
+			if(preg_match($test[2], $page, $matches)){
+				$result = $test[1].': '.$matches[1];
+				if(in_array($result, $found)) continue;
+				array_push($found, $result);
+			}
+		}
+		return $found;
+	}
+
+	# Return the contents of a page as a string, either by spoofing or not.
+	function fetchUrl($url, $spoof = false, $user_agent = '', $cache = true){
+		$url = trim($url);
+		$data = null;
+		$name = $this->sanitize($url);
+		$cache_folder = 'cache/';
+		$file = getcwd() . '/' . $cache_folder . $name . '.html';
+		if(file_exists($file)){
+			$data = file_get_contents($file);
+			# Remove file if its older than a day
+			$file_last_modified = filemtime($file);
+			if(($file_last_modified - time()) > 24 * 3600){
+				unlink($file);
+			}
+		}
+		else if($this->connected){
+			$ch = curl_init();
+			if($spoof){
+				if($user_agent == ''){
+					$user_agent = $this->user_agents['Chrome'];
+				}
+				curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
+			}
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+			curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+			$data = curl_exec($ch);
+			$status = curl_getinfo($ch);
+			curl_close($ch);
+			if($cache){
+				if(!is_dir($cache_folder)){
+					mkdir($cache_folder);
+				}
+				file_put_contents($file, $data);
+			}
+		}
+		else{
+			$data = 'offline';
+		}
+		return $data;
+	}
+
+	# Return the contents of a responce headers as an array, either by spoofing or not.
+	function fetchHeaders($url, $spoof = false, $user_agent = '', $cache = true){
+		$url = trim($url);
+		$data = null;
+		$cache_folder = 'cache/';
+		$name = $this->sanitize($url);
+		$file = getcwd() . '/' . $cache_folder . $name . '.headers';
+		if(file_exists($file)){
+			$data = file_get_contents($file);
+			# Remove file if its older than a day
+			$file_last_modified = filemtime($file);
+			if(($file_last_modified - time()) > 24 * 3600){
+				unlink($file);
+			}
+		}
+		else if($this->connected){
+			$ch = curl_init();
+			if($spoof){
+				if($user_agent == ''){
+					$user_agent = $this->user_agents['Chrome'];
+				}
+				curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
+			}
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_HEADER, true);
+			curl_setopt($ch, CURLOPT_NOBODY, true);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+			curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+			$data = curl_exec($ch);
+			if($cache){
+				if(!is_dir($cache_folder)){
+					mkdir($cache_folder);
+				}
+				file_put_contents($file, $data);
+			}
+		}
+		return $data; 
 	}
 }
