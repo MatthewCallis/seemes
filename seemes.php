@@ -96,7 +96,7 @@ class Seemes{
 		array('Framework',			'SWFObject',				'/(flash|swf)object\.js/i'),
 		array('Framework',			'Typekit',					'/use\.typekit\.com\//i'),
 		array('Framework',			'YUI',						'/(yahoo-dom-event|connection-min)\.js/i'),
-		array('Language'			'Ruby on Rails',			'/\/?(bundles|stylesheets|javascripts)\/.+?\?/i'),	# /javascripts/prototype.js?1296689582
+		array('Language',			'Ruby on Rails',			'/\/?(bundles|javascripts)\/.+?\?/i'),	# /javascripts/prototype.js?1296689582
 		array('Social API',			'AddThis',					'/addthis\.com\/js\//i'),	# http://s7.addthis.com/js/addthis_widget.php?v=12
 		array('Social API',			'bandcamp',					'/bandcamp\.com\/tmpdata\//i'),
 		array('Social API',			'Digg',						'/widgets\.digg\.com/i'),	# http://widgets.digg.com/buttons.js
@@ -266,10 +266,12 @@ class Seemes{
 	);
 
 	var $test_text = array(
+		array('*Error*',			'Apache Error',				'/Internal Server Error\<\/title\>/i'),
+		array('*Error*',			'PHP Error',				'/\<b\>Warning\<\/b\>\:/'),
 		array('Ads',				'BannerConnect',			'/src=["\']http:\/\/ad\.bannerconnect\.net/i'),
+		array('Ads',				'Fetchback',				'/pixel\.fetchback\.com\/serve/i'),	# http://pixel.fetchback.com/serve/fb/pdc?cat=&name=landing&sid=580
 		array('Ads',				'OpenX',					'/(href|src)=["\'].*delivery\/(afr|ajs|avw|ck)\.php[^"\']*/'),
 		array('Ads',				'ReTargeter',				'/\/ad\.retargeter\.com\/seg/i'),
-		array('Ads',				'Fetchback',				'/pixel\.fetchback\.com\/serve/i'),	# http://pixel.fetchback.com/serve/fb/pdc?cat=&name=landing&sid=580
 		array('Analytics',			'BackType',					'/\/api\.backtype\.com/i'),	# http://api.backtype.com/tweetcount.json?key=
 		array('Analytics',			'NedStat',					'/\.nedstatbasic\.net\/cgi-bin\/viewstat\?name\=/i'),
 		array('Analytics',			'PercentMobile',			'/tracking\.percentmobile\.com\/pixel\//i'),	# http://tracking.percentmobile.com/pixel/ce645c30-75bd-11de-899d-12313900c5b8
@@ -280,15 +282,15 @@ class Seemes{
 		array('CMS',				'Burning Board Lite',		'/Powered by <b><a[^>]+>Burning Board Lite/i'),
 		array('CMS',				'Contao',					'/powered by (TYPOlight|Contao)/is'),
 		array('CMS',				'Drupal',					'/(\/sites\/all\/(modules|themes)\/|\/modules\/system\/)/i'),
-		array('CMS',				'ExpressionEngine',			'/\<input[\s].+?[\s]name\=["\'](ACT|XID|RET)["\'].+?\/?\>/i'),	# <input type="hidden" name="XID" value="d04f5fe1238da64b0764f69777032a35fe141ce0" />
 		array('CMS',				'EventWax',					'/\.eventwax\.com\/(.*)\/register/i'),	# https://github.eventwax.com/codeconf-2011/register	
+		array('CMS',				'ExpressionEngine',			'/\<input[\s].+?[\s]name\=["\'](ACT|XID|RET)["\'].+?\/?\>/i'),	# <input type="hidden" name="XID" value="d04f5fe1238da64b0764f69777032a35fe141ce0" />
 		array('CMS',				'Fatwire',					'/\/Satellite\?|\/ContentServer\?/s'),
 		array('CMS',				'Liferay',					'/<script[^>]*>.*LifeRay\.currentURL/is'),
-		array('CMS',				'Movable Type',				'/Powered by\<br[\s]?[\/]?\>\<a[^>]+>Movable[\s]?Type/i'),	# Powered by<br /><a href="http://www.movabletype.org" rel="nofollow">Movable Type 3.17</a>
 		array('CMS',				'Magento',					'/var BLANK_URL = \'[^>]+js\/blank\.html\'/i'),
 		array('CMS',				'miniBB',					'/<a href=["\'][^>]+minibb.+\s*<!--End of copyright link/is'),
 		array('CMS',				'MODx',						'/<a[^>]+>Powered by MODx<\/a>/i'),
 		array('CMS',				'Moodle',					'/<link[^>]*\/theme\/standard\/styles.php".*>/'),
+		array('CMS',				'Movable Type',				'/Powered by\<br[\s]?[\/]?\>\<a[^>]+>Movable[\s]?Type/i'),	# Powered by<br /><a href="http://www.movabletype.org" rel="nofollow">Movable Type 3.17</a>
 		array('CMS',				'OpenCMS',					'/<link[^>]*\.opencms\..*?>/i'),
 		array('CMS',				'osCommerce',				'/Powered by <a[^>]+>osCommerce<\/a>/i'),
 		array('CMS',				'PHP-Fusion',				'/(href|src)=["\']?infusions\//i'),
@@ -298,9 +300,9 @@ class Seemes{
 		array('CMS',				'SMF',						'/<script .+\s+var smf_/i'),
 		array('CMS',				'SuperSite',				'/(Template root\.html starts here ###|ui\/supersite\/)/i'),	# http://40083.myorderbox.com/kb/servlet/KBServlet/faq1103.html
 		array('CMS',				'vBulletin',				'/vbmenu_control/i'),
-		array('CMS',				'WordPress',				'/<link rel=["\']stylesheet["\'] [^>]+wp-content/i'),
-		array('CMS',				'WordPress',				'/\/wp\-login\.php["\']/i'),
+		array('CMS',				'WordPress',				'/(src|href)=["\'].*?[\/]?wp-content\/.*?["\']/i'),	# src="http://divinecss.com/wp-content/uploads/2008/11/IMDivine.gif"
 		array('CMS',				'WordPress',				'/Performance optimized by W3 Total Cache/i'),
+		array('CMS',				'WordPress',				'/\/wp\-login\.php["\']/i'),
 		array('CMS',				'XOOPS',					'/xoops(_login|_redirect|poll)/i'),
 		array('Customer Service',	'GetSatisfaction',			'/asset_host\s*\+\s*"javascripts\/feedback.*\.js/im'),
 		array('Customer Service',	'LivePerson',				'/\.liveperson\.net\//i'),	# http://server.iad.liveperson.net/hc/44533531/?cmd=file&amp;file=visitorWantsToChat&amp;site=44533531&amp;byhref=1&amp;imageUrl=
@@ -309,14 +311,13 @@ class Seemes{
 		array('Framework',			'Google Font API',			'/ref=["\']?http:\/\/fonts.googleapis.com\//i'),
 		array('Framework',			'YUI',						'/(yui-overlay|yui-panel-container|_yuiResizeMonitor)/'),
 		array('Language',			'ASP.NET',					'/(\_\_EVENT(TARGET|ARGUMENT)|\_\_VIEWSTATE)/'),
+		array('Language',			'Ruby on Rails',			'/\/?(bundles|stylesheets)\/.+?\?/i'),	# /javascripts/prototype.js?1296689582
 		array('Social API',			'Shelfari',					'/shelfari\.com\/ws\//i'),	# http://www.shelfari.com/ws/shelfH.swf
 		array('Social API',			'Tumblr',					'/<iframe src=["\']http:\/\/www\.tumblr\.com/i'),
 		array('Social API',			'Twitter',					'/\.twitter\.com\/flash\/widgets\//i'),
 		array('Utility',			'Closure',					'/<script[^>]*>.*goog\.require/is'),
 		array('Utility',			'Gravatar',					'/\/secure\.gravatar\.com\/avatar\//i'),
 		array('Utility',			'SpeakerText',				'/jb\.speakertext\.com\/player\//i'),	# <link ... http://jb.speakertext.com/player/speakertext.css?ver=MU
-		array('*Error*',			'PHP Error',				'/\<b\>Warning\<\/b\>\:/'),
-		array('*Error*',			'Apache Error',				'/Internal Server Error\<\/title\>/i'),
 	);
 
 	var $test_header = array(

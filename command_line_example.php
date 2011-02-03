@@ -35,7 +35,6 @@ if(!empty($argc) && strstr($argv[0], basename(__FILE__))){
 				}
 				# Begin checking the domain and inialize some variables.
 				echo 'Checking ' , $domain_name , '...';
-				$results = array();
 				$seemes = new Seemes($domain_name);
 				$page = $seemes->fetchUrl($domain_name, true);
 				$header = $seemes->fetchHeaders($domain_name, true);
@@ -45,22 +44,36 @@ if(!empty($argc) && strstr($argv[0], basename(__FILE__))){
 					echo ' offline...';
 				}
 				else{
-					# Set what we want to filter by, CMS only for now.
-					$search_for = array('CMS');
-					# Begin the searching...
+					# Begin the searching with a search for CMS...
+					$results = array();
 					$results = $seemes->checkMetaTags(&$page, $results);
-					$results = $seemes->checkScriptTags(&$page, $results, &$search_for);
-					$results = $seemes->checkPageText(&$page, $results, &$search_for);
-					$results = $seemes->checkPageHeaders(&$header, $results, &$search_for);
+					$results = $seemes->checkScriptTags(&$page, $results, array('CMS'));
+					$results = $seemes->checkPageText(&$page, $results, array('CMS'));
+					$results = $seemes->checkPageHeaders(&$header, $results, array('CMS'));
 					$cms = implode(', ', $results);
-					$analytics = $seemes->getAccounts(&$page, array(), array());
-					$analytics = implode(', ', $analytics);
 					if($cms[0] == ',') $cms = substr($cms, 2);
-					if($analytics[0] == ',') $analytics = substr($analytics, 2);
+					
+					# ...then search for Language...
+					$results = array();
+					$results = $seemes->checkScriptTags(&$page, $results, array('Language'));
+					$results = $seemes->checkPageText(&$page, $results, array('Language'));
+					$results = $seemes->checkPageHeaders(&$header, $results, array('Language'));
+					$language = implode(', ', $results);
+					if($language[0] == ',') $language = substr($language, 2);
+
+					# ...then search for Server.
+					$results = array();
+					$results = $seemes->checkScriptTags(&$page, $results, array('Server'));
+					$results = $seemes->checkPageText(&$page, $results, array('Server'));
+					$results = $seemes->checkPageHeaders(&$header, $results, array('Server'));
+					$server = implode(', ', $results);
+					if($server[0] == ',') $server = substr($server, 2);
 				}
 				# Add our found values back to our array so we can convert them to CSV later.
 				# Each value in the array is another column, so here we are adding 2 columns, then updating our original container array.
 				array_push($value, $cms);
+				array_push($value, $language);
+				array_push($value, $server);
 				array_push($value, $analytics);
 				$csv_data[$key] = $value;
 				echo " done!\n";
