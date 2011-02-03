@@ -96,6 +96,7 @@ class Seemes{
 		array('Framework',			'SWFObject',				'/(flash|swf)object\.js/i'),
 		array('Framework',			'Typekit',					'/use\.typekit\.com\//i'),
 		array('Framework',			'YUI',						'/(yahoo-dom-event|connection-min)\.js/i'),
+		array('Language'			'Ruby on Rails',			'/\/?(bundles|stylesheets|javascripts)\/.+?\?/i'),	# /javascripts/prototype.js?1296689582
 		array('Social API',			'AddThis',					'/addthis\.com\/js\//i'),	# http://s7.addthis.com/js/addthis_widget.php?v=12
 		array('Social API',			'bandcamp',					'/bandcamp\.com\/tmpdata\//i'),
 		array('Social API',			'Digg',						'/widgets\.digg\.com/i'),	# http://widgets.digg.com/buttons.js
@@ -130,7 +131,7 @@ class Seemes{
 		array('Ads', 				'expo-Max',					'/expo\-max\.com\/adserver\//i'),
 		array('Ads', 				'Google Partner Ads',		'/GA_google(AddSlot|AddAttr|FetchAds|AddAdSenseService|EnableAllServices)/'),
 		array('Ads', 				'TradeDoubler',				'/tradedoubler\.com\/imp\?/i'),	# http://imppl.tradedoubler.com/imp?type(js)pool(308935)a(1531296)'
-		array('Ads', 				'VigLink',					'/var\svglnk\s?\=\s?\{/i'),
+		array('Ads', 				'VigLink',					'/api\.viglink\.com/i'),	# ar vglnk_domain = (("https:" == document.location.protocol) ? "https://" : "http://") + "api.viglink.com";
 		array('Ads', 				'Yahoo! Ads',				'/window\.yzq_d/i'),
 		array('Analytics',			'BTBuckets',				'/btbuckets\.com\/bt\.js/i'),	# btbuckets.com/bt.js
 		array('Analytics',			'chartbeat',				'/chartbeat\.com\/js\/chartbeat\.js/i'),
@@ -223,6 +224,7 @@ class Seemes{
 		array('Ads',				'Chango',					'/__changoPartnerId\=["\'](.*)["\']\;/i'),	#	<script type="text/javascript">var __changoPartnerId='suite101';</script>
 		array('Ads',				'Google Conversion',		'/google\_conversion\_id\s?\=\s?["\']?(.*)["\']?\;/i'),	#	google_conversion_id = 1031212126;
 		array('Ads',				'VigLink',					'/vglnk\s?\=\s?\{\s\?key\:\s?["\'](.*)["\']\s?\}\;/i'),	#	var vglnk = { key: '909e2de4e3686ff0cbf92e12d6b99c58' };
+		array('Ads',				'VigLink',					'/vglnk\_api\_key[\s]*\=[\s]*["\'](.+?)["\']\;/i'),	# var vglnk_api_key = "8eb8c964d427e97a1567cec6532655f0";
 		array('Analytics',			'BTBuckets',				'/\$BTB\=\{s\:(.*)\}\;/i'),	# $BTB={s:10777};
 		array('Analytics',			'chartbeat',				'/async\_config\=\{uid\:\s?(.[0-9]{1,10})\,/i'),
 		array('Analytics',			'ClickTale',				'/ClickTale\((.*)\,[\s]?[0-9]\,[\s]?["\'].+?["\']\)\;/i'),	# ClickTale(40377,1,"www");
@@ -235,6 +237,7 @@ class Seemes{
 		array('Analytics',			'Google Analytics',			'/\_setAccount["\']\, ["\']([AUau\-0-9]*)["\']\]\)\;/i'),	#	_setAccount', 'UA-32013-6'], ['_trackPageview'] / _setAccount', 'UA-10841838-1']);
 		array('Analytics',			'iWebTrack',				'/\/nTrack\.asp\?id\=(.+?)\&/i'),	# /nTrack.asp?id=28223&
 		array('Analytics',			'Mixpanel',					'/mpq\.push\(\[["\']init["\'],\s?["\'](.+?)["\']]\)\;/i'),	# mpq.push(["init", "65fde2abd433eae3b32b38b7ebd2f37e"]);
+		array('Analytics',			'Mixpanel',					'/new[\s]*MixpanelLib(["\'](.+?)["\']); /i'),	# new MixpanelLib("9a3025103118d0cfb3f778328f140ccb"); 
 		array('Analytics',			'NedStat',					'/\.nedstatbasic\.net\/cgi-bin\/viewstat\?name\=(.*)["\']/i'), # <a href="http://usa.nedstatbasic.net/cgi-bin/viewstat?name=nesdev">
 		array('Analytics',			'Quantcast',				'/\qacct\=["\'](.*)["\'];/i'),	#	_qacct="p-d4P3FpSypJrlA";
 		array('Analytics',			'Quantcast',				'/\_qoptions \= \{ qacct\: ["\'](.*)["\']/i'),	#	_qoptions = { qacct: "p-45WWkjSYwI3II" };
@@ -246,7 +249,8 @@ class Seemes{
 		array('Analytics',			'Tyxo.bg Counter',			'/cnt\.tyxo\.bg\/(.*)\?rnd/i'),	# http://cnt.tyxo.bg/30428?rnd=
 		array('Analytics',			'Tyxo.bg Counter',			'/www\.tyxo\.bg\/\?(.*)["\']/i'),	# http://www.tyxo.bg/?30428
 		array('Social API',			'Blogglisten',				'/blogglisten\.no\/count\?id\=(.*)["\']\)/i'),	# myBloggListenAsynch.src = ('http://www.blogglisten.no/count?id=1962');
-		array('Social API',			'Facebook AppID',			'/appId\:\s?["\']([0-9])["\']\,/'),
+		array('Social API',			'Facebook AppID',			'/appId\[\s]*?\:[\s]*?["\']([0-9])["\']\,/'),
+		array('Social API',			'Facebook API Key',			'/apiKey\[\s]*?\:[\s]*?["\']([a-b0-9])["\']\,/'),	# apiKey : '9cccf2c9570e99aeb7ea4a7284b957a1',
 		array('Social API',			'Facebook',					'/facebook\.com\/home\.php\?#\/(.+?)[\?"\']/i'),	# http://www.facebook.com/home.php?#/jan.riley?ref=profile
 		array('Social API',			'Flickr',					'/flickr\.com\/badge\_code\.gne\?nsid\=(.+?)\&/i'),	# http://www.flickr.com/badge_code.gne?nsid=41519657%40N00&count=6&display=latest&name=0&size=square&raw=1
 		array('Social API',			'Flickr',					'/flickr\.com\/people\/(.+?)["\']/i'),	# http://www.flickr.com/people/34166943@N05
@@ -266,6 +270,7 @@ class Seemes{
 		array('Ads',				'OpenX',					'/(href|src)=["\'].*delivery\/(afr|ajs|avw|ck)\.php[^"\']*/'),
 		array('Ads',				'ReTargeter',				'/\/ad\.retargeter\.com\/seg/i'),
 		array('Ads',				'Fetchback',				'/pixel\.fetchback\.com\/serve/i'),	# http://pixel.fetchback.com/serve/fb/pdc?cat=&name=landing&sid=580
+		array('Analytics',			'BackType',					'/\/api\.backtype\.com/i'),	# http://api.backtype.com/tweetcount.json?key=
 		array('Analytics',			'NedStat',					'/\.nedstatbasic\.net\/cgi-bin\/viewstat\?name\=/i'),
 		array('Analytics',			'PercentMobile',			'/tracking\.percentmobile\.com\/pixel\//i'),	# http://tracking.percentmobile.com/pixel/ce645c30-75bd-11de-899d-12313900c5b8
 		array('Analytics',			'SiteCatalyst',				'/End SiteCatalyst code/i'),
@@ -289,6 +294,7 @@ class Seemes{
 		array('CMS',				'PHP-Fusion',				'/(href|src)=["\']?infusions\//i'),
 		array('CMS',				'phpBB',					'/Powered by <a[^>]+>phpBB<\/a>/i'),
 		array('CMS',				'phpBB',					'/["\']templates\/subSilver\/subSilver\.css["\']/i'),
+		array('CMS',				'Posterous',				'/(src\=["\']http\:\/\/posterous\.com\/analytics\_tracker\/|data\-posterous\-redirect\-url\=)/i'),	# <iframe src="http://posterous.com/analytics_tracker" style="height: 1px; width: 1px; display: none;"></iframe> 
 		array('CMS',				'SMF',						'/<script .+\s+var smf_/i'),
 		array('CMS',				'SuperSite',				'/(Template root\.html starts here ###|ui\/supersite\/)/i'),	# http://40083.myorderbox.com/kb/servlet/KBServlet/faq1103.html
 		array('CMS',				'vBulletin',				'/vbmenu_control/i'),
