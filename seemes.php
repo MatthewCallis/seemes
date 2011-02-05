@@ -105,6 +105,7 @@ class Seemes{
 		array('Social API',			'Google Buzz',				'/google\.com\/buzz\/api\//i'),	# http://www.google.com/buzz/api/button.js
 		array('Social API',			'LinkedIn',					'/platform\.linkedin\.com/i'),	# http://platform.linkedin.com/in.js
 		array('Social API',			'MyBlogLog',				'/mybloglog\.com\//i'),	# http://track.mybloglog.com/js/jsserv.php?mblID=2008072316273799
+		array('Social API',			'Mixi',						'/mixi\.jp\/js\/share\.js/i'),	# http://static.mixi.jp/js/share.js
 		array('Social API',			'Sphinn',					'/sphinn\.com\//i'),	# http://sphinn.com/evb/button.php
 		array('Social API',			'Tumblr',					'/\.tumblr\.com\//i'),
 		array('Social API',			'Twitter',					'/(\/platform\.)?twitter\.com\/(javascripts)?/i'),	# http://twitter.com/javascripts/blogger.js
@@ -155,6 +156,7 @@ class Seemes{
 		array('CMS',				'MyBB',						'/MyBB/'),
 		array('CMS',				'Piwik',					'/Piwik/'),
 		array('CMS',				'phpBB',					'/_phpbbprivmsg/'),
+		array('CMS',				'Quick Shopping Cart (GoDaddy)',	'/var QSC/i'),	# var QSC
 		array('Customer Service',	'UserVoice',				'/cdn\.uservoice\.com\//i'),
 		array('Framework',			'ExtJS',					'/Ext/'),
 		array('Framework',			'jQuery UI',				'/jQuery.ui/'),
@@ -297,6 +299,7 @@ class Seemes{
 		array('CMS',				'phpBB',					'/Powered by <a[^>]+>phpBB<\/a>/i'),
 		array('CMS',				'phpBB',					'/["\']templates\/subSilver\/subSilver\.css["\']/i'),
 		array('CMS',				'Posterous',				'/(src\=["\']http\:\/\/posterous\.com\/analytics\_tracker\/|data\-posterous\-redirect\-url\=)/i'),	# <iframe src="http://posterous.com/analytics_tracker" style="height: 1px; width: 1px; display: none;"></iframe> 
+		array('CMS',				'Quick Shopping Cart (GoDaddy)',	'/(qsc\-site\-(company|companyname|slogan|logo)/i'),	# <span class="qsc-site-company-copyright">
 		array('CMS',				'SMF',						'/<script .+\s+var smf_/i'),
 		array('CMS',				'SuperSite',				'/(Template root\.html starts here ###|ui\/supersite\/)/i'),	# http://40083.myorderbox.com/kb/servlet/KBServlet/faq1103.html
 		array('CMS',				'vBulletin',				'/vbmenu_control/i'),
@@ -312,6 +315,9 @@ class Seemes{
 		array('Framework',			'YUI',						'/(yui-overlay|yui-panel-container|_yuiResizeMonitor)/'),
 		array('Language',			'ASP.NET',					'/(\_\_EVENT(TARGET|ARGUMENT)|\_\_VIEWSTATE)/'),
 		array('Language',			'Ruby on Rails',			'/\/?(bundles|stylesheets)\/.+?\?/i'),	# /javascripts/prototype.js?1296689582
+		array('Social API',			'Evernote',					'/(src\=["\']http\:\/\/static\.evernote\.com\/|Evernote.doClip)/i'),	# onclick="Evernote.doClip({styling: 'full'}); return false;"
+		array('Social API',			'Gree',						'/src=["\']http\:\/\/share\.gree\.jp\//i'),	# src="http://share.gree.jp/share?url=...?jp&type=0&height=20
+		array('Social API',			'Hatena',					'/hatena-bookmark-button-frame/i'),	# hatena-bookmark-button-frame
 		array('Social API',			'Shelfari',					'/shelfari\.com\/ws\//i'),	# http://www.shelfari.com/ws/shelfH.swf
 		array('Social API',			'Tumblr',					'/<iframe src=["\']http:\/\/www\.tumblr\.com/i'),
 		array('Social API',			'Twitter',					'/\.twitter\.com\/flash\/widgets\//i'),
