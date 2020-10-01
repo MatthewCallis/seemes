@@ -1,4 +1,5 @@
 ## Seemes ##
+Wonders Magical Preview
 
 Pronounced like CMS. This class will scan for known software running on a given website and report it back. Simple to expand, easily to implement. See the file for functions and usage until I can write a better version here.
 
